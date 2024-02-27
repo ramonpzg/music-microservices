@@ -1,10 +1,9 @@
-
 from src.plotting import make_waveform, make_spectogram
 from src.helpers import *
 import gradio as gr
 
 
-with gr.Blocks(theme='gstaff/xkcd') as demo:
+with gr.Blocks(theme="gstaff/xkcd") as demo:
     gr.Markdown("# Music Generation and Editing App")
     gr.Markdown("Second Demo of the Day!")
 
@@ -13,19 +12,36 @@ with gr.Blocks(theme='gstaff/xkcd') as demo:
         with gr.Row(equal_height=True):
             with gr.Column(min_width=900):
                 text = gr.Textbox(
-                    label="Name", lines=3, interactive=True,
+                    label="Name",
+                    lines=3,
+                    interactive=True,
                     info="Audio Prompt for the kind of song you want your model to produce.",
                     value="a fast bachata with violin sounds and few notes from a saxophone",
                     placeholder="Type your song description in here.",
                 )
-                make_music   = gr.Button("Create Music")
+                make_music = gr.Button("Create Music")
             with gr.Column():
-                tokens      = gr.Slider(label="Max Number of New Tokens", value=200, minimum=5, maximum=1000, step=1)
-                guidance    = gr.Slider(label="Guidance Scale", value=3, minimum=1, maximum=50, step=1)
-                sample_rate = gr.Radio([16000, 32000, 44100], label="Sample Rate", value=32000)
-        
+                tokens = gr.Slider(
+                    label="Max Number of New Tokens",
+                    value=200,
+                    minimum=5,
+                    maximum=1000,
+                    step=1,
+                )
+                guidance = gr.Slider(
+                    label="Guidance Scale", value=3, minimum=1, maximum=50, step=1
+                )
+                sample_rate = gr.Radio(
+                    [16000, 32000, 44100], label="Sample Rate", value=32000
+                )
+
         audio_output = gr.Audio()
-        make_music.click(fn=make_sound, inputs=[text, guidance, tokens, sample_rate], outputs=audio_output, api_name="create_music")
+        make_music.click(
+            fn=make_sound,
+            inputs=[text, guidance, tokens, sample_rate],
+            outputs=audio_output,
+            api_name="create_music",
+        )
 
         gr.Markdown()
         gr.Markdown("# Step 2 - Visualize your creation 📈 👀 👌")
@@ -48,6 +64,8 @@ with gr.Blocks(theme='gstaff/xkcd') as demo:
 
         gr.Markdown()
         gr.Markdown("# Step 4 - Create a MIDI Representation! 🎛️ 🎶 🎼")
-        gr.HTML(value="""<iframe src="https://basicpitch.spotify.com/" height="1000" width="100%"></iframe>""")
+        gr.HTML(
+            value="""<iframe src="https://basicpitch.spotify.com/" height="1000" width="100%"></iframe>"""
+        )
 
-demo.launch()
+demo.launch(server_port=8080, server_name="0.0.0.0")
