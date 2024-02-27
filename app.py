@@ -160,4 +160,4 @@ with gr.Blocks(theme="gstaff/xkcd") as demo:
             value="""<iframe src="https://basicpitch.spotify.com/" height="1000" width="100%"></iframe>"""
         )
 
-demo.launch(server_port=3000, server_name="0.0.0.0")
+demo.launch(server_port=os.getenv("PORT", 3000), server_name="0.0.0.0")
